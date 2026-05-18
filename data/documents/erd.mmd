@@ -1,0 +1,30 @@
+erDiagram
+    IMAGES {
+        int id PK
+        int width
+        int height
+        string file_name
+        int license
+        string flickr_url
+        string coco_url
+        date date_captured
+    }
+
+    CATEGORIES {
+        int id PK
+        string name
+        string supercategory
+    }
+
+    ANNOTATIONS {
+        int id PK
+        int image_id FK
+        int category_id FK
+        string segmentation
+        float area
+        string bbox
+        int iscrowd
+    }
+
+    IMAGES ||--o{ ANNOTATIONS : "has"
+    CATEGORIES ||--o{ ANNOTATIONS : "labeled as"

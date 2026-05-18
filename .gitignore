@@ -1,0 +1,15 @@
+.venv/
+
+data/interim/*
+data/processed/*
+data/raw/*
+
+notebooks/yolo11n.pt
+notebooks/yolo26n.pt
+notebooks/yolo26s.pt
+notebooks/runs/
+
+outputs/logs/*
+outputs/models/*
+
+src/

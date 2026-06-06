@@ -1,2 +1,6 @@
-pandas
-nummpy
+matplotlib 
+seaborn 
+pandas 
+kagglehub==0.3.13
+
+ultralytics

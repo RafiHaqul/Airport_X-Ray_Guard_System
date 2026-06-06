@@ -7,6 +7,8 @@ Sistem kecerdasan buatan yang dirancang untuk mengotomatisasi deteksi barang ber
 Dataset yang digunakan dalam project ini  bisa diakses melalui
 - LDXray Dataset : [kaggle](https://www.kaggle.com/datasets/yuzheguocs/LDXray)
 
+> NOTE : Dataset ini secara otomatis akan terdownload saat menalankan `preprocess.py`
+
 ## Summary 
 
 Dataset memiliki 12 kelas yang dapat ditampilkan dalam gambar berikut :
@@ -91,7 +93,61 @@ project
     └── logs
 ```
 
-## Task
-- [Done] ------ Data EDA and pre-processing
-- [Ongoing] --- Training data
-- [Pending] --- App Develop# Airport_X-Ray_Guard_System
+## Code
+
+### Prepare
+
+Buat Virtual Environtment terlebih dahulu agar program berjalan dengan lancar
+
+```Terminal
+$ python3 -m venv .{nama_venv}
+$ source .{nama_venv}/bin/activate
+```
+
+Lalu install library yang dibutuhkan project ini
+
+```Terminal
+$ pip install -r requirments.txt
+```
+
+### Pre-process
+
+Jalankan preprocess ini untuk mendownload dataset dan mengolah dataset sesuai dengan format yang dibutuhkan YOLO
+
+```Terminal
+$ python3 src/preprocess.py
+```
+
+### Train
+
+Dokumentasi lengkap untuk parameter pelatihan YOLO
+https://docs.ultralytics.com/modes/train#musgd-optimizer
+
+```python
+model = YOLO("yolov8n.pt") # Bisa menggunakan bobot checkpoint jika training sebelumnya terputus
+```
+config :
+- **data**    = Berisi data yaml, default: `(data=../configs/yolo11n.yaml)` 
+- **epochs**  = Jumlah literasi pelatihan model
+- **imgsz**   = Ukuran gambar yang akan di prosess, max: `(imgsz=640)`
+- **batch**   = Ukuran batch atau bisa diatur mode otomatis `(batch=-1)`
+- **device**  = Menentukan perangkat komputasi untuk pelatihan, GPU `(device=0)`, CPU `(device=cpu)`
+- **project** = Lokasi hasil model disimpan
+- **name**    = Nama training. Digunakan untuk menamai dub direktori project
+- **patience**= Sistem early stoping jika pelatihan model tidak ada perkembangan
+- **save**    = Menyimpan checkpoint bobot terakhir
+- **workers** = Jumlah thread pekerja untuk prosess data
+
+Jalankan perintah training
+
+```Terminal
+$ python3 src/train.py
+```
+
+atau
+
+```Terminal
+$ yolo task=detect mode=train model=yolo11n.pt data=../configs/yolo11n.yaml epochs=5 batch=16 workers=8 device=0 project=../outputs/models/ name=ldxray_yolo11n patience=5 save=True
+```
+
+> NOTE : Jika ingin melanjutkan checkpoint user tidak perlu melakukan configurasi lagi
